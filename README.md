@@ -3,7 +3,7 @@ farmix-app Skeleton
 
 How to run backend (locally):
 1. Create a solution and add projects:
-   dotnet new sln -n clean-skeleton
+   dotnet new sln -n farmix-app
    dotnet sln add src/Core/Core.csproj src/Application/Application.csproj src/Adapter/Adapter.csproj src/WebAPI/WebAPI.csproj
 2. From src/WebAPI run migrations and start:
    dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL

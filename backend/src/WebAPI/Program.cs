@@ -1,6 +1,6 @@
 
-using Adapter.Persistence;
-using Adapter.Services;
+using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Application.Services;
 
@@ -24,6 +24,14 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Apply EF Core migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

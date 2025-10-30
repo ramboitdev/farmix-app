@@ -1,0 +1,52 @@
+
+name: Build and Deploy ASP.NET Core API to Azure
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore backend/src/WebAPI/WebAPI.csproj
+
+      - name: Build
+        run: dotnet build backend/src/WebAPI/WebAPI.csproj --configuration Release --no-restore
+
+      - name: Run tests
+        run: echo "No tests configured yet"
+
+      - name: Publish
+        run: dotnet publish backend/src/WebAPI/WebAPI.csproj -c Release -o publish
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapi-publish
+          path: publish
+
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: webapi-publish
+          path: publish
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: YOUR_AZURE_APP_NAME
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: publish

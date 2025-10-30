@@ -1,6 +1,6 @@
 
 using Application.Services;
-using Core.Entities;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;

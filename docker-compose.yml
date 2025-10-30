@@ -1,0 +1,29 @@
+
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: clean_skeleton
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  webapi:
+    build:
+      context: ./backend
+      dockerfile: src/WebAPI/Dockerfile
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Database=clean_skeleton;Username=postgres;Password=postgres
+    ports:
+      - "5195:5195"
+
+volumes:
+  pgdata:

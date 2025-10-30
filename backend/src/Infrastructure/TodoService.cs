@@ -1,12 +1,12 @@
 
 using Application.Services;
-using Core.Entities;
-using Adapter.Persistence;
+using Domain.Entities;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Adapter.Services
+namespace Infrastructure.Services
 {
     public class TodoService : ITodoService
     {

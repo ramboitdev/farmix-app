@@ -1,16 +1,20 @@
 
-farmix-app Skeleton
+Clean Architecture minimal skeleton (ASP.NET Core WebAPI + EF Core + Angular)
 
 How to run backend (locally):
 1. Create a solution and add projects:
-   dotnet new sln -n farmix-app
-   dotnet sln add src/Core/Core.csproj src/Application/Application.csproj src/Adapter/Adapter.csproj src/WebAPI/WebAPI.csproj
-2. From src/WebAPI run migrations and start:
-   dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
-   dotnet ef migrations add InitialCreate -p ../Infrastructure -s .
-   dotnet ef database update -p ../Infrastructure -s .
-   dotnet run --project src/WebAPI
+   dotnet new sln -n clean-skeleton
+   dotnet sln add backend/src/Domain/Domain.csproj backend/src/Application/Application.csproj backend/src/Infrastructure/Infrastructure.csproj backend/src/WebAPI/WebAPI.csproj
+2. From the repository root, add EF Core packages:
+   dotnet add backend/src/Infrastructure package Npgsql.EntityFrameworkCore.PostgreSQL
+   dotnet add backend/src/Infrastructure package Microsoft.EntityFrameworkCore.Design
+   dotnet add backend/src/WebAPI package Npgsql.EntityFrameworkCore.PostgreSQL
+3. (Optional) If you use the CLI to manage migrations locally, install the tools:
+   dotnet tool install --global dotnet-ef
+4. Run with docker-compose (recommended):
+   docker-compose up --build
+   The WebAPI will be available at http://localhost:5195 and Postgres at localhost:5432
 
 Notes:
-- This is a simplified scaffold intended as a starting point. Adjust namespaces, add real solution file, and set up EF migrations and DI registrations as needed.
-- Frontend is a minimal placeholder. Run `npm install` and `ng serve` after creating a proper Angular project (or use Angular CLI to scaffold).
+- Program.cs is configured to apply EF Core migrations automatically at startup (db.Database.Migrate()).
+- The Migrations folder contains an InitialCreate migration and a model snapshot so the database schema can be created automatically when the container starts.
